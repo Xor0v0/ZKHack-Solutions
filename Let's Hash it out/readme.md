@@ -18,7 +18,7 @@
 
    - Blake2b Hash (`Cargo.toml` 添加 `blake2s_simd="version"`  )
         
-        ```rust
+        ```Rust
         fn main() {
             let msg = "I love you";
             let msg_bytes = msg.as_bytes();
@@ -36,7 +36,7 @@
 
      因此，为了生成 pedersen hash 我们需要引入 pairing-friendly curve 、安全随机源、已经实现好的 pedersen primitive。
 
-     ```rust
+     ```Rust
      use ark_bls12_381::{G1Affine, G1Projective};
      use ark_crypto_primitives::crh::{
          pedersen::{Window, CRH},
@@ -95,6 +95,7 @@
 需要注意的是，由于我们最终需要使用解去线性组合签名，而后续与生成器进行乘法操作时要求标量在 $F_r$ 上，因此在进行矩阵运算时，我们需要把所有的元素都表示在 $F_r$ 中。
 
 数学表达为：
+
 $$
 \vec{x}\cdot sk\cdot \begin{pmatrix} b_1(m_1)&b_2(m_1)&\dots&b_{256}(m_1)\\ b_1(m_2)&b_2(m_2)&\dots&b_{256}(m_2)\\ \vdots&\vdots&\ddots&\vdots\\ b_1(m_{256})&b_2(m_{256})&\dots&b_{256}(m_{256 })\\ \end{pmatrix} \cdot \begin{pmatrix} g_1\\g_2\\\vdots\\g_{256} \end{pmatrix} =\vec{x}\cdot \begin{pmatrix} \Sigma_1\\\Sigma_2\\\vdots\\\Sigma_{256} \end{pmatrix}
 $$
